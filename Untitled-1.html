@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Shop DOM - Full</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f5f5f5;
+}
+
+/* PRODUCTS */
+.products {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product-item {
+    border: 1px solid #ccc;
+    background: white;
+    margin: 10px;
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+.product-image img {
+    width: 100%;
+    height: 150px;
+}
+
+.product-info {
+    margin-top: 10px;
+}
+
+button {
+    margin-top: 5px;
+    padding: 5px;
+    background: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* CART */
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+td, th {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+.total {
+    font-size: 20px;
+    color: red;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🛒 Product Store</h2>
+<div id="products" class="products"></div>
+
+<h2>🧾 Invoice</h2>
+<table id="cart">
+<tr>
+<th>STT</th>
+<th>Name</th>
+<th>Code</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Total</th>
+</tr>
+</table>
+
+<button onclick="checkout()">Checkout</button>
+<p id="total" class="total"></p>
+
+<script>
+
+// 📦 DATA
+const data = [
+    {name: "Hoa sen", code: "SP01", price: 1500000, img: "https://via.placeholder.com/150"},
+    {name: "Hoa hồng", code: "SP02", price: 500000, img: "https://via.placeholder.com/150"},
+    {name: "Hoa lan", code: "SP03", price: 800000, img: "https://via.placeholder.com/150"},
+    {name: "Hoa cúc", code: "SP04", price: 300000, img: "https://via.placeholder.com/150"}
+];
+
+// 🎯 TẠO SẢN PHẨM (STYLE CỦA BẠN)
+const container = document.getElementById("products");
+
+data.forEach(sp => {
+
+    // Khung chính
+    const newDiv = document.createElement("div");
+    newDiv.setAttribute("class","product-item");
+
+    // IMAGE
+    const productImage = document.createElement("div");
+    productImage.setAttribute("class","product-image");
+
+    const img = document.createElement("img");
+    img.setAttribute("src", sp.img);
+
+    productImage.appendChild(img);
+
+    // INFO
+    const productInfo = document.createElement("div");
+    productInfo.setAttribute("class","product-info");
+
+    // NAME
+    const name = document.createElement("p");
+    name.innerText = sp.name;
+
+    // CODE
+    const code = document.createElement("p");
+    code.innerText = "Code: " + sp.code;
+
+    // PRICE
+    const price = document.createElement("p");
+    price.innerText = "Price: " + sp.price;
+
+    // INPUT
+    const input = document.createElement("input");
+    input.type = "number";
+    input.value = 1;
+    input.min = 1;
+
+    // BUTTON
+    const btn = document.createElement("button");
+    btn.innerText = "Add to cart";
+
+    btn.onclick = function() {
+        addToCart(sp.name, sp.code, sp.price, input.value);
+    };
+
+    // GẮN INFO
+    productInfo.appendChild(name);
+    productInfo.appendChild(code);
+    productInfo.appendChild(price);
+    productInfo.appendChild(input);
+    productInfo.appendChild(btn);
+
+    // GẮN TẤT CẢ
+    newDiv.appendChild(productImage);
+    newDiv.appendChild(productInfo);
+
+    container.appendChild(newDiv);
+});
+
+
+// 🧾 CART
+let stt = 1;
+
+function addToCart(name, code, price, quantity) {
+    let table = document.getElementById("cart");
+
+    let row = table.insertRow();
+
+    row.insertCell(0).innerHTML = stt++;
+    row.insertCell(1).innerHTML = name;
+    row.insertCell(2).innerHTML = code;
+    row.insertCell(3).innerHTML = quantity;
+    row.insertCell(4).innerHTML = price;
+    row.insertCell(5).innerHTML = price * quantity;
+}
+
+
+// 💰 CHECKOUT
+function checkout() {
+    let table = document.getElementById("cart");
+    let total = 0;
+
+    for (let i = 1; i < table.rows.length; i++) {
+        total += parseInt(table.rows[i].cells[5].innerHTML);
+    }
+
+    document.getElementById("total").innerHTML = "Total Payment: " + total;
+}
+
+</script>
+
+</body>
+</html>

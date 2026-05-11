@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <title>Smart E-Invoice Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="invoice-container">
+        <h3><i class="icon-invoice"></i> E-Invoice Detail</h3>
+        <table class="bang">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Unit Price ($)</th>
+                    <th>Sub-total ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>MacBook Pro</td>
+                    <td class="sl-cell">
+                        <span class="sl">1</span>
+                        <button class="btn-add" onclick="increaseQty(0)">+</button>
+                    </td>
+                    <td class="dg">2500</td>
+                    <td class="tt">0</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Magic Mouse</td>
+                    <td class="sl-cell">
+                        <span class="sl">2</span>
+                        //tạo button tăng số lượng cho sản phẩm
+                        <button class="btn-add" onclick="increaseQty(1)">+</button>
+                    </td>
+                    <td class="dg">80</td>
+                    <td class="tt">0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>iPhone 15</td>
+                    <td class="sl-cell">
+                        <span class="sl">1</span>
+                        <button class="btn-add" onclick="increaseQty(2)">+</button>
+                    </td>
+                    <td class="dg">1200</td>
+                    <td class="tt">0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>AirPods Pro</td>
+                    <td class="sl-cell">
+                        <span class="sl">1</span>
+                        <button class="btn-add" onclick="increaseQty(3)">+</button>
+                    </td>
+                    <td class="dg">250</td>
+                    <td class="tt">0</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>iPad Air</td>
+                    <td class="sl-cell">
+                        <span class="sl">1</span>
+                        <button class="btn-add" onclick="increaseQty(4)">+</button>
+                    </td>
+                    <td class="dg">600</td>
+                    <td class="tt">0</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="total-label">GRAND TOTAL:</td>
+                    <td id="TongThanhToan" colspan="2">0</td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <div class="action-area">
+            <button id="btnThanhToan" onclick="calculateInvoice()">Process Payment</button>
+        </div>
+    </div>
+
+    <script>
+        // Hàm tăng số lượng cho sản phẩm
+        function increaseQty(index) {
+            const quantities = document.getElementsByClassName('sl');
+            let currentQty = parseInt(quantities[index].innerHTML);
+            quantities[index].innerHTML = currentQty + 1;
+        }
+
+        // Hàm tính toán hóa đơn (DOM Manipulation)
+        function calculateInvoice() {
+            const donGia = document.getElementsByClassName('dg');
+            const soLuong = document.getElementsByClassName('sl');
+            const thanhTien = document.getElementsByClassName('tt');
+            let tongThanhToan = 0;
+
+            for (let i = 0; i < donGia.length; i++) {
+                // Tính thành tiền từng dòng
+                let rowTotal = parseInt(soLuong[i].innerHTML) * parseInt(donGia[i].innerHTML);
+                thanhTien[i].innerHTML = rowTotal.toLocaleString();
+                
+                // Cộng dồn vào tổng thanh toán
+                tongThanhToan += rowTotal;
+            }
+
+            // Hiển thị tổng cuối cùng
+            document.getElementById('TongThanhToan').innerHTML = tongThanhToan.toLocaleString() + " USD";
+            
+            // Hiệu ứng thông báo thành công
+            alert("Payment processed successfully! Total: " + tongThanhToan + " USD");
+        }
+    </script>
+</body>
+</html>
